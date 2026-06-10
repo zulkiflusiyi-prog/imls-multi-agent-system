@@ -1,13 +1,43 @@
 import { COOKIE_NAME } from "@shared/const";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
-import { publicProcedure, router } from "./_core/trpc";
+import { publicProcedure, protectedProcedure, router } from "./_core/trpc";
+import { z } from "zod";
+import {
+  getOrCreateStudentProfile,
+  updateStudentProfile,
+  getAllCourses,
+  getCoursesByCategory,
+  getLessonsByCourse,
+  enrollStudent,
+  getStudentEnrollments,
+  updateEnrollmentProgress,
+  getStudentLearningPaths,
+  getQuizzesByLesson,
+  getQuizQuestions,
+  recordQuizAttempt,
+  getStudentQuizAttempts,
+  getAllAgents,
+  getAgentActivityLogs,
+  getStudentChatHistory,
+  getAllUsers,
+  getLatestAnalytics,
+  getStudentLessonProgress,
+  updateLessonProgress,
+} from "./db";
+import {
+  initializeAgents,
+  getAllAgentsStatus,
+  generatePersonalizedLearningPath,
+  getTutorResponse,
+  generateQuizFeedback,
+  getContentRecommendations,
+} from "./agents";
 
 export const appRouter = router({
-    // if you need to use socket.io, read and register route in server/_core/index.ts, all api should start with '/api/' so that the gateway can route correctly
   system: systemRouter,
   auth: router({
-    me: publicProcedure.query(opts => opts.ctx.user),
+    me: publicProcedure.query((opts) => opts.ctx.user),
     logout: publicProcedure.mutation(({ ctx }) => {
       const cookieOptions = getSessionCookieOptions(ctx.req);
       ctx.res.clearCookie(COOKIE_NAME, { ...cookieOptions, maxAge: -1 });
@@ -17,12 +47,233 @@ export const appRouter = router({
     }),
   }),
 
-  // TODO: add feature routers here, e.g.
-  // todo: router({
-  //   list: protectedProcedure.query(({ ctx }) =>
-  //     db.getUserTodos(ctx.user.id)
-  //   ),
-  // }),
+  // ============ STUDENT PROFILE ROUTES ============
+  student: router({
+    getProfile: protectedProcedure.query(async ({ ctx }) => {
+      return getOrCreateStudentProfile(ctx.user.id);
+    }),
+
+    updateProfile: protectedProcedure
+      .input(
+        z.object({
+          skillLevel: z.enum(["beginner", "intermediate", "advanced"]).optional(),
+          learningStyle: z.enum(["visual", "auditory", "kinesthetic", "reading"]).optional(),
+          subjectInterests: z.array(z.string()).optional(),
+          bio: z.string().optional(),
+        })
+      )
+      .mutation(async ({ ctx, input }) => {
+        return updateStudentProfile(ctx.user.id, input);
+      }),
+
+    getEnrollments: protectedProcedure.query(async ({ ctx }) => {
+      return getStudentEnrollments(ctx.user.id);
+    }),
+
+    getLessonProgress: protectedProcedure.query(async ({ ctx }) => {
+      return getStudentLessonProgress(ctx.user.id);
+    }),
+
+    updateLessonProgress: protectedProcedure
+      .input(
+        z.object({
+          lessonId: z.number(),
+          status: z.enum(["not_started", "in_progress", "completed"]),
+        })
+      )
+      .mutation(async ({ ctx, input }) => {
+        return updateLessonProgress(ctx.user.id, input.lessonId, input.status);
+      }),
+  }),
+
+  // ============ COURSE & CONTENT ROUTES ============
+  courses: router({
+    getAll: publicProcedure.query(async () => {
+      return getAllCourses();
+    }),
+
+    getByCategory: publicProcedure
+      .input(z.object({ category: z.string() }))
+      .query(async ({ input }) => {
+        return getCoursesByCategory(input.category);
+      }),
+
+    getLessons: publicProcedure
+      .input(z.object({ courseId: z.number() }))
+      .query(async ({ input }) => {
+        return getLessonsByCourse(input.courseId);
+      }),
+
+    enroll: protectedProcedure
+      .input(z.object({ courseId: z.number() }))
+      .mutation(async ({ ctx, input }) => {
+        return enrollStudent({
+          studentId: ctx.user.id,
+          courseId: input.courseId,
+          status: "enrolled",
+        });
+      }),
+
+    updateProgress: protectedProcedure
+      .input(
+        z.object({
+          enrollmentId: z.number(),
+          completionPercentage: z.number().min(0).max(100),
+        })
+      )
+      .mutation(async ({ input }) => {
+        return updateEnrollmentProgress(
+          input.enrollmentId,
+          input.completionPercentage
+        );
+      }),
+  }),
+
+  // ============ LEARNING PATH ROUTES ============
+  learningPaths: router({
+    getStudentPaths: protectedProcedure.query(async ({ ctx }) => {
+      return getStudentLearningPaths(ctx.user.id);
+    }),
+
+    generatePersonalized: protectedProcedure
+      .input(
+        z.object({
+          skillLevel: z.enum(["beginner", "intermediate", "advanced"]),
+          subjectInterests: z.array(z.string()),
+        })
+      )
+      .mutation(async ({ ctx, input }) => {
+        return generatePersonalizedLearningPath(
+          ctx.user.id,
+          input.skillLevel,
+          input.subjectInterests
+        );
+      }),
+  }),
+
+  // ============ QUIZ & ASSESSMENT ROUTES ============
+  quizzes: router({
+    getByLesson: publicProcedure
+      .input(z.object({ lessonId: z.number() }))
+      .query(async ({ input }) => {
+        return getQuizzesByLesson(input.lessonId);
+      }),
+
+    getQuestions: publicProcedure
+      .input(z.object({ quizId: z.number() }))
+      .query(async ({ input }) => {
+        return getQuizQuestions(input.quizId);
+      }),
+
+    submitAttempt: protectedProcedure
+      .input(
+        z.object({
+          quizId: z.number(),
+          score: z.number(),
+          totalPoints: z.number(),
+          percentage: z.number(),
+          passed: z.boolean(),
+          answers: z.record(z.string(), z.string()),
+        })
+      )
+      .mutation(async ({ ctx, input }) => {
+        const attempt = await recordQuizAttempt({
+          studentId: ctx.user.id,
+          quizId: input.quizId,
+          score: input.score.toString() as any,
+          totalPoints: input.totalPoints.toString() as any,
+          percentage: input.percentage.toString() as any,
+          passed: input.passed,
+          answers: input.answers as Record<string, string>,
+        });
+
+        // Generate feedback using Assessment Agent
+        const feedback = await generateQuizFeedback(
+          ctx.user.id,
+          input.quizId,
+          input.score,
+          input.totalPoints,
+          input.answers as Record<string, string>
+        );
+
+        return {
+          attempt,
+          feedback,
+        };
+      }),
+
+    getAttempts: protectedProcedure.query(async ({ ctx }) => {
+      return getStudentQuizAttempts(ctx.user.id);
+    }),
+  }),
+
+  // ============ TUTOR CHAT ROUTES ============
+  tutor: router({
+    askQuestion: protectedProcedure
+      .input(z.object({ question: z.string() }))
+      .mutation(async ({ ctx, input }) => {
+        return getTutorResponse(ctx.user.id, input.question);
+      }),
+
+    getChatHistory: protectedProcedure.query(async ({ ctx }) => {
+      return getStudentChatHistory(ctx.user.id, 50);
+    }),
+
+    getRecommendations: protectedProcedure
+      .input(z.object({ skillLevel: z.string() }))
+      .query(async ({ ctx, input }) => {
+        return getContentRecommendations(ctx.user.id, input.skillLevel);
+      }),
+  }),
+
+  // ============ MULTI-AGENT SYSTEM ROUTES ============
+  agents: router({
+    initialize: protectedProcedure.mutation(async ({ ctx }) => {
+      if (ctx.user.role !== "admin") {
+        throw new Error("Only admins can initialize agents");
+      }
+      return initializeAgents();
+    }),
+
+    getAll: publicProcedure.query(async () => {
+      return getAllAgentsStatus();
+    }),
+
+    getActivityLogs: protectedProcedure
+      .input(z.object({ agentId: z.number().optional(), limit: z.number().optional() }))
+      .query(async ({ ctx, input }) => {
+        if (ctx.user.role !== "admin") {
+          throw new Error("Only admins can view agent activity logs");
+        }
+        return getAgentActivityLogs(input.agentId, input.limit ?? 100);
+      }),
+  }),
+
+  // ============ ADMIN ROUTES ============
+  admin: router({
+    getAllUsers: protectedProcedure.query(async ({ ctx }) => {
+      if (ctx.user.role !== "admin") {
+        throw new Error("Only admins can view all users");
+      }
+      return getAllUsers();
+    }),
+
+    getSystemAnalytics: protectedProcedure.query(async ({ ctx }) => {
+      if (ctx.user.role !== "admin") {
+        throw new Error("Only admins can view system analytics");
+      }
+      return getLatestAnalytics();
+    }),
+
+    getAgentActivityLogs: protectedProcedure
+      .input(z.object({ agentId: z.number().optional(), limit: z.number().optional() }))
+      .query(async ({ ctx, input }) => {
+        if (ctx.user.role !== "admin") {
+          throw new Error("Only admins can view agent activity logs");
+        }
+        return getAgentActivityLogs(input.agentId, input.limit ?? 100);
+      }),
+  }),
 });
 
 export type AppRouter = typeof appRouter;
