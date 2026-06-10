@@ -38,10 +38,10 @@ export default function Tutor() {
         {/* Header */}
         <div>
           <h1 className="text-4xl font-bold mb-2 flex items-center gap-3">
-            <MessageSquare className="w-8 h-8 text-accent" />
+            <MessageSquare className="w-8 h-8 text-[hsl(var(--accent))]" />
             AI Tutor
           </h1>
-          <p className="text-muted-foreground">
+          <p className="text-[hsl(var(--muted-foreground))]">
             Ask questions and get intelligent, personalized responses from our AI tutor
           </p>
         </div>
@@ -66,8 +66,8 @@ export default function Tutor() {
                         <div
                           className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
                             message.role === "user"
-                              ? "bg-accent text-accent-foreground"
-                              : "bg-muted text-foreground"
+                              ? "bg-[hsl(var(--accent))] text-[hsl(var(--accent-foreground))]"
+                              : "bg-[hsl(var(--muted))] text-foreground"
                           }`}
                         >
                           <p className="text-sm">{message.content}</p>
@@ -77,8 +77,8 @@ export default function Tutor() {
                 ) : (
                   <div className="h-full flex items-center justify-center">
                     <div className="text-center">
-                      <MessageSquare className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-                      <p className="text-muted-foreground">Start a conversation with your AI tutor</p>
+                      <MessageSquare className="w-12 h-12 text-[hsl(var(--muted-foreground))] mx-auto mb-4" />
+                      <p className="text-[hsl(var(--muted-foreground))]">Start a conversation with your AI tutor</p>
                     </div>
                   </div>
                 )}
@@ -116,10 +116,10 @@ export default function Tutor() {
             {/* Quick Tips */}
             <Card>
               <h3 className="font-semibold mb-3 flex items-center gap-2">
-                <Lightbulb className="w-5 h-5 text-accent" />
+                <Lightbulb className="w-5 h-5 text-[hsl(var(--accent))]" />
                 Quick Tips
               </h3>
-              <ul className="space-y-2 text-sm text-muted-foreground">
+              <ul className="space-y-2 text-sm text-[hsl(var(--muted-foreground))]">
                 <li>• Ask about concepts you don't understand</li>
                 <li>• Request examples or explanations</li>
                 <li>• Ask for study tips and strategies</li>
@@ -130,20 +130,20 @@ export default function Tutor() {
             {/* Tutor Info */}
             <Card>
               <h3 className="font-semibold mb-3">About Your Tutor</h3>
-              <p className="text-sm text-muted-foreground mb-4">
+              <p className="text-sm text-[hsl(var(--muted-foreground))] mb-4">
                 Your AI tutor is powered by advanced language models and understands your learning context.
               </p>
               <div className="space-y-2 text-xs">
                 <div className="flex justify-between">
-                  <span className="text-muted-foreground">Response Time</span>
+                  <span className="text-[hsl(var(--muted-foreground))]">Response Time</span>
                   <span className="font-semibold">Instant</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-muted-foreground">Availability</span>
+                  <span className="text-[hsl(var(--muted-foreground))]">Availability</span>
                   <span className="font-semibold">24/7</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-muted-foreground">Languages</span>
+                  <span className="text-[hsl(var(--muted-foreground))]">Languages</span>
                   <span className="font-semibold">Multiple</span>
                 </div>
               </div>

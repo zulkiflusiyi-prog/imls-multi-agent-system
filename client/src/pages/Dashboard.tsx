@@ -36,7 +36,7 @@ export default function Dashboard() {
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div>
             <h1 className="text-4xl font-bold mb-2">Welcome back, {user.name}!</h1>
-            <p className="text-muted-foreground">
+            <p className="text-[hsl(var(--muted-foreground))]">
               Continue your learning journey with personalized recommendations
             </p>
           </div>
@@ -51,7 +51,7 @@ export default function Dashboard() {
         {/* Multi-Agent Status */}
         <div>
           <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
-            <Brain className="w-6 h-6 text-accent" />
+            <Brain className="w-6 h-6 text-[hsl(var(--accent))]" />
             Active Agents
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -60,14 +60,14 @@ export default function Dashboard() {
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex-1">
                     <h3 className="font-semibold text-lg">{agent.name}</h3>
-                    <p className="text-xs text-muted-foreground capitalize">{agent.type}</p>
+                    <p className="text-xs text-[hsl(var(--muted-foreground))] capitalize">{agent.type}</p>
                   </div>
                   <div className={`status-${agent.status === "active" ? "active" : "inactive"}`} />
                 </div>
-                <p className="text-sm text-muted-foreground line-clamp-2 mb-3">
+                <p className="text-sm text-[hsl(var(--muted-foreground))] line-clamp-2 mb-3">
                   {agent.description}
                 </p>
-                <div className="text-xs text-muted-foreground">
+                <div className="text-xs text-[hsl(var(--muted-foreground))]">
                   {agent.lastActivityAt
                     ? `Last active: ${new Date(agent.lastActivityAt).toLocaleDateString()}`
                     : "No recent activity"}
@@ -92,32 +92,32 @@ export default function Dashboard() {
               <Card>
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-muted-foreground mb-1">Courses Enrolled</p>
+                    <p className="text-sm text-[hsl(var(--muted-foreground))] mb-1">Courses Enrolled</p>
                     <p className="text-3xl font-bold">{enrollmentsQuery.data?.length || 0}</p>
                   </div>
-                  <BookOpen className="w-10 h-10 text-accent/20" />
+                  <BookOpen className="w-10 h-10 text-[hsl(var(--accent))]/20" />
                 </div>
               </Card>
 
               <Card>
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-muted-foreground mb-1">Learning Paths</p>
+                    <p className="text-sm text-[hsl(var(--muted-foreground))] mb-1">Learning Paths</p>
                     <p className="text-3xl font-bold">{learningPathsQuery.data?.length || 0}</p>
                   </div>
-                  <TrendingUp className="w-10 h-10 text-accent/20" />
+                  <TrendingUp className="w-10 h-10 text-[hsl(var(--accent))]/20" />
                 </div>
               </Card>
 
               <Card>
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-muted-foreground mb-1">Skill Level</p>
+                    <p className="text-sm text-[hsl(var(--muted-foreground))] mb-1">Skill Level</p>
                     <p className="text-2xl font-bold capitalize">
                       {profileQuery.data?.skillLevel || "Beginner"}
                     </p>
                   </div>
-                  <Zap className="w-10 h-10 text-accent/20" />
+                  <Zap className="w-10 h-10 text-[hsl(var(--accent))]/20" />
                 </div>
               </Card>
             </div>
@@ -127,13 +127,13 @@ export default function Dashboard() {
               <h3 className="text-lg font-semibold mb-4">Your Profile</h3>
               <div className="space-y-4">
                 <div>
-                  <p className="text-sm text-muted-foreground mb-2">Learning Style</p>
+                  <p className="text-sm text-[hsl(var(--muted-foreground))] mb-2">Learning Style</p>
                   <Badge className="badge-primary">
                     {profileQuery.data?.learningStyle || "Visual"}
                   </Badge>
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground mb-2">Subject Interests</p>
+                  <p className="text-sm text-[hsl(var(--muted-foreground))] mb-2">Subject Interests</p>
                   <div className="flex flex-wrap gap-2">
                     {profileQuery.data?.subjectInterests?.length ? (
                       profileQuery.data.subjectInterests.map((interest, i) => (
@@ -142,7 +142,7 @@ export default function Dashboard() {
                         </Badge>
                       ))
                     ) : (
-                      <p className="text-sm text-muted-foreground">No interests set yet</p>
+                      <p className="text-sm text-[hsl(var(--muted-foreground))]">No interests set yet</p>
                     )}
                   </div>
                 </div>
@@ -178,7 +178,7 @@ export default function Dashboard() {
                     <div className="space-y-2">
                       <div>
                         <div className="flex justify-between text-sm mb-1">
-                          <span className="text-muted-foreground">Progress</span>
+                          <span className="text-[hsl(var(--muted-foreground))]">Progress</span>
                           <span className="font-semibold">{enrollment.completionPercentage}%</span>
                         </div>
                         <Progress value={Number(enrollment.completionPercentage)} />
@@ -189,8 +189,8 @@ export default function Dashboard() {
               </div>
             ) : (
               <Card className="text-center py-12">
-                <BookOpen className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-                <p className="text-muted-foreground mb-4">No courses enrolled yet</p>
+                <BookOpen className="w-12 h-12 text-[hsl(var(--muted-foreground))] mx-auto mb-4" />
+                <p className="text-[hsl(var(--muted-foreground))] mb-4">No courses enrolled yet</p>
                 <Link href="/courses">
                   <Button className="btn-primary">Explore Courses</Button>
                 </Link>
@@ -214,7 +214,7 @@ export default function Dashboard() {
                     <div className="flex items-start justify-between mb-3">
                       <div>
                         <h4 className="font-semibold text-lg">{path.title}</h4>
-                        <p className="text-sm text-muted-foreground">{path.description}</p>
+                        <p className="text-sm text-[hsl(var(--muted-foreground))]">{path.description}</p>
                       </div>
                       <Badge className={`badge-${
                         path.status === "completed"
@@ -226,7 +226,7 @@ export default function Dashboard() {
                         {path.status}
                       </Badge>
                     </div>
-                    <div className="text-sm text-muted-foreground">
+                    <div className="text-sm text-[hsl(var(--muted-foreground))]">
                       {path.recommendedCourses.length} courses recommended
                     </div>
                   </Card>
@@ -234,8 +234,8 @@ export default function Dashboard() {
               </div>
             ) : (
               <Card className="text-center py-12">
-                <TrendingUp className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-                <p className="text-muted-foreground mb-4">No learning paths yet</p>
+                <TrendingUp className="w-12 h-12 text-[hsl(var(--muted-foreground))] mx-auto mb-4" />
+                <p className="text-[hsl(var(--muted-foreground))] mb-4">No learning paths yet</p>
                 <Link href="/learning-paths">
                   <Button className="btn-primary">Create Your First Path</Button>
                 </Link>
@@ -281,10 +281,10 @@ export default function Dashboard() {
                   { icon: TrendingUp, text: "Achieved 90% on Assessment", time: "3 days ago" },
                 ].map((activity, i) => (
                   <div key={i} className="flex items-start gap-3 pb-3 border-b border-[hsl(var(--border))] last:border-0">
-                    <activity.icon className="w-5 h-5 text-accent mt-0.5 flex-shrink-0" />
+                    <activity.icon className="w-5 h-5 text-[hsl(var(--accent))] mt-0.5 flex-shrink-0" />
                     <div className="flex-1">
                       <p className="text-sm font-medium">{activity.text}</p>
-                      <p className="text-xs text-muted-foreground">{activity.time}</p>
+                      <p className="text-xs text-[hsl(var(--muted-foreground))]">{activity.time}</p>
                     </div>
                   </div>
                 ))}

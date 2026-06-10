@@ -67,7 +67,7 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-[hsl(var(--background))] text-[hsl(var(--foreground))];
     font-feature-settings: "rlig" 1, "calt" 1;
   }
 
@@ -130,7 +130,7 @@
 
   /* Card component */
   .card {
-    @apply rounded-lg border bg-card p-6 text-card-foreground shadow-sm transition-all duration-200 hover:shadow-md;
+    @apply rounded-lg border bg-[hsl(var(--card))] p-6 text-[hsl(var(--card-foreground))] shadow-sm transition-all duration-200 hover:shadow-md;
   }
 
   .card-interactive {
@@ -143,15 +143,15 @@
   }
 
   .btn-primary {
-    @apply btn-base bg-accent text-accent-foreground hover:bg-opacity-90 active:scale-95;
+    @apply btn-base bg-[hsl(var(--accent))] text-[hsl(var(--accent-foreground))] hover:bg-opacity-90 active:scale-95;
   }
 
   .btn-secondary {
-    @apply btn-base border border-[hsl(var(--border))] bg-muted hover:bg-muted/80 text-foreground;
+    @apply btn-base border border-[hsl(var(--border))] bg-[hsl(var(--muted))] hover:bg-opacity-80 text-[hsl(var(--foreground))];
   }
 
   .btn-ghost {
-    @apply btn-base text-foreground hover:bg-muted;
+    @apply btn-base text-[hsl(var(--foreground))] hover:bg-[hsl(var(--muted))];
   }
 
   /* Badge styles */
@@ -160,60 +160,60 @@
   }
 
   .badge-primary {
-    @apply badge bg-accent/10 text-accent;
+    @apply badge bg-[hsl(var(--accent)/0.1)] text-[hsl(var(--accent))];
   }
 
   .badge-success {
-    @apply badge bg-success/10 text-success;
+    @apply badge bg-[hsl(var(--success)/0.1)] text-[hsl(var(--success))];
   }
 
   .badge-warning {
-    @apply badge bg-warning/10 text-warning;
+    @apply badge bg-[hsl(var(--warning)/0.1)] text-[hsl(var(--warning))];
   }
 
   .badge-error {
-    @apply badge bg-error/10 text-error;
+    @apply badge bg-[hsl(var(--error)/0.1)] text-[hsl(var(--error))];
   }
 
   /* Status indicators */
   .status-active {
-    @apply inline-flex items-center gap-2 text-success;
+    @apply inline-flex items-center gap-2 text-[hsl(var(--success))];
   }
 
   .status-active::before {
-    @apply content-[''] w-2 h-2 rounded-full bg-success;
+    @apply content-[''] w-2 h-2 rounded-full bg-[hsl(var(--success))];
   }
 
   .status-inactive {
-    @apply inline-flex items-center gap-2 text-muted-foreground;
+    @apply inline-flex items-center gap-2 text-[hsl(var(--muted-foreground))];
   }
 
   .status-inactive::before {
-    @apply content-[''] w-2 h-2 rounded-full bg-muted-foreground;
+    @apply content-[''] w-2 h-2 rounded-full bg-[hsl(var(--muted-foreground))];
   }
 
   /* Loading skeleton */
   .skeleton {
-    @apply animate-pulse rounded-lg bg-muted;
+    @apply animate-pulse rounded-lg bg-[hsl(var(--muted))];
   }
 
   /* Gradient backgrounds */
   .gradient-primary {
-    @apply bg-gradient-to-br from-accent via-accent/80 to-accent/60;
+    @apply bg-gradient-to-br from-[hsl(var(--accent))] via-[hsl(var(--accent)/0.8)] to-[hsl(var(--accent)/0.6)];
   }
 
   .gradient-subtle {
-    @apply bg-gradient-to-br from-background to-muted;
+    @apply bg-gradient-to-br from-[hsl(var(--background))] to-[hsl(var(--muted))];
   }
 
   /* Divider */
   .divider {
-    @apply h-px bg-border;
+    @apply h-px bg-[hsl(var(--border))];
   }
 
   /* Focus ring */
   .focus-ring {
-    @apply outline-none ring-2 ring-accent ring-offset-2 ring-offset-background;
+    @apply outline-none ring-2 ring-[hsl(var(--accent))] ring-offset-2 ring-offset-[hsl(var(--background))];
   }
 
   /* Smooth transitions */
@@ -236,16 +236,16 @@
   }
 
   .hover-glow {
-    @apply transition-all duration-200 hover:shadow-lg hover:shadow-accent/20;
+    @apply transition-all duration-200 hover:shadow-lg hover:shadow-[hsl(var(--accent)/0.2)];
   }
 
   /* Text utilities */
   .text-gradient {
-    @apply bg-gradient-to-r from-accent to-secondary bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-[hsl(var(--accent))] to-[hsl(var(--secondary))] bg-clip-text text-transparent;
   }
 
   .text-muted {
-    @apply text-muted-foreground;
+    @apply text-[hsl(var(--muted-foreground))];
   }
 
   /* Grid layouts */
@@ -276,7 +276,25 @@
 @layer utilities {
   /* Scrollbar styling */
   .scrollbar-thin {
-    @apply scrollbar-thin scrollbar-thumb-muted scrollbar-track-transparent hover:scrollbar-thumb-muted-foreground;
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--muted)) transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: hsl(var(--muted));
+    border-radius: 4px;
+  }
+
+  .scrollbar-thin:hover::-webkit-scrollbar-thumb {
+    background: hsl(var(--muted-foreground));
   }
 
   /* Truncate text */

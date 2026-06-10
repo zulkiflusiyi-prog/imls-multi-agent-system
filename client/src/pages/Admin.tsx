@@ -42,7 +42,7 @@ export default function Admin() {
         <div className="text-center py-12">
           <AlertCircle className="w-12 h-12 text-destructive mx-auto mb-4" />
           <h2 className="text-2xl font-bold mb-2">Access Denied</h2>
-          <p className="text-muted-foreground">
+          <p className="text-[hsl(var(--muted-foreground))]">
             You don't have permission to access the admin panel.
           </p>
         </div>
@@ -62,10 +62,10 @@ export default function Admin() {
         {/* Header */}
         <div>
           <h1 className="text-4xl font-bold mb-2 flex items-center gap-3">
-            <Users className="w-8 h-8 text-accent" />
+            <Users className="w-8 h-8 text-[hsl(var(--accent))]" />
             Admin Panel
           </h1>
-          <p className="text-muted-foreground">
+          <p className="text-[hsl(var(--muted-foreground))]">
             Manage users, view system analytics, and monitor agent activity
           </p>
         </div>
@@ -75,42 +75,42 @@ export default function Admin() {
           <Card>
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-muted-foreground mb-1">Total Students</p>
+                <p className="text-sm text-[hsl(var(--muted-foreground))] mb-1">Total Students</p>
                 <p className="text-3xl font-bold">{analyticsQuery.data?.totalStudents || 0}</p>
               </div>
-              <Users className="w-10 h-10 text-accent/20" />
+              <Users className="w-10 h-10 text-[hsl(var(--accent))]/20" />
             </div>
           </Card>
 
           <Card>
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-muted-foreground mb-1">Total Enrollments</p>
+                <p className="text-sm text-[hsl(var(--muted-foreground))] mb-1">Total Enrollments</p>
                 <p className="text-3xl font-bold">{analyticsQuery.data?.totalEnrollments || 0}</p>
               </div>
-              <TrendingUp className="w-10 h-10 text-accent/20" />
+              <TrendingUp className="w-10 h-10 text-[hsl(var(--accent))]/20" />
             </div>
           </Card>
 
           <Card>
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-muted-foreground mb-1">Courses Completed</p>
+                <p className="text-sm text-[hsl(var(--muted-foreground))] mb-1">Courses Completed</p>
                 <p className="text-3xl font-bold">{analyticsQuery.data?.totalCoursesCompleted || 0}</p>
               </div>
-              <CheckCircle className="w-10 h-10 text-accent/20" />
+              <CheckCircle className="w-10 h-10 text-[hsl(var(--accent))]/20" />
             </div>
           </Card>
 
           <Card>
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-muted-foreground mb-1">Avg Quiz Score</p>
+                <p className="text-sm text-[hsl(var(--muted-foreground))] mb-1">Avg Quiz Score</p>
                 <p className="text-3xl font-bold">
                   {analyticsQuery.data?.averageQuizScore.toString().split(".")[0] || 0}%
                 </p>
               </div>
-              <BarChart3 className="w-10 h-10 text-accent/20" />
+              <BarChart3 className="w-10 h-10 text-[hsl(var(--accent))]/20" />
             </div>
           </Card>
         </div>
@@ -127,7 +127,7 @@ export default function Admin() {
           <TabsContent value="users" className="space-y-4">
             <div className="flex gap-2">
               <div className="flex-1 relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[hsl(var(--muted-foreground))]" />
                 <Input
                   placeholder="Search users by name or email..."
                   value={searchQuery}
@@ -147,7 +147,7 @@ export default function Admin() {
 
             <div className="border rounded-lg overflow-hidden">
               <table className="w-full">
-                <thead className="bg-muted border-b">
+                <thead className="bg-[hsl(var(--muted))] border-b">
                   <tr>
                     <th className="px-6 py-3 text-left text-sm font-semibold">Name</th>
                     <th className="px-6 py-3 text-left text-sm font-semibold">Email</th>
@@ -159,9 +159,9 @@ export default function Admin() {
                 <tbody className="divide-y">
                   {filteredUsers && filteredUsers.length > 0 ? (
                     filteredUsers.map((u) => (
-                      <tr key={u.id} className="hover:bg-muted/50">
+                      <tr key={u.id} className="hover:bg-[hsl(var(--muted))]/50">
                         <td className="px-6 py-4 text-sm font-medium">{u.name || "—"}</td>
-                        <td className="px-6 py-4 text-sm text-muted-foreground">{u.email || "—"}</td>
+                        <td className="px-6 py-4 text-sm text-[hsl(var(--muted-foreground))]">{u.email || "—"}</td>
                         <td className="px-6 py-4 text-sm">
                           <Badge
                             className={`badge-${u.role === "admin" ? "primary" : "warning"}`}
@@ -169,17 +169,17 @@ export default function Admin() {
                             {u.role}
                           </Badge>
                         </td>
-                        <td className="px-6 py-4 text-sm text-muted-foreground">
+                        <td className="px-6 py-4 text-sm text-[hsl(var(--muted-foreground))]">
                           {new Date(u.createdAt).toLocaleDateString()}
                         </td>
-                        <td className="px-6 py-4 text-sm text-muted-foreground">
+                        <td className="px-6 py-4 text-sm text-[hsl(var(--muted-foreground))]">
                           {new Date(u.lastSignedIn).toLocaleDateString()}
                         </td>
                       </tr>
                     ))
                   ) : (
                     <tr>
-                      <td colSpan={5} className="px-6 py-8 text-center text-muted-foreground">
+                      <td colSpan={5} className="px-6 py-8 text-center text-[hsl(var(--muted-foreground))]">
                         No users found
                       </td>
                     </tr>
@@ -200,9 +200,9 @@ export default function Admin() {
                       <span className="text-sm font-medium">Student Engagement</span>
                       <span className="text-sm font-semibold">78%</span>
                     </div>
-                    <div className="w-full bg-muted rounded-full h-2">
+                    <div className="w-full bg-[hsl(var(--muted))] rounded-full h-2">
                       <div
-                        className="bg-accent h-2 rounded-full"
+                        className="bg-[hsl(var(--accent))] h-2 rounded-full"
                         style={{ width: "78%" }}
                       />
                     </div>
@@ -212,7 +212,7 @@ export default function Admin() {
                       <span className="text-sm font-medium">Course Completion Rate</span>
                       <span className="text-sm font-semibold">65%</span>
                     </div>
-                    <div className="w-full bg-muted rounded-full h-2">
+                    <div className="w-full bg-[hsl(var(--muted))] rounded-full h-2">
                       <div
                         className="bg-success h-2 rounded-full"
                         style={{ width: "65%" }}
@@ -224,7 +224,7 @@ export default function Admin() {
                       <span className="text-sm font-medium">Quiz Pass Rate</span>
                       <span className="text-sm font-semibold">82%</span>
                     </div>
-                    <div className="w-full bg-muted rounded-full h-2">
+                    <div className="w-full bg-[hsl(var(--muted))] rounded-full h-2">
                       <div
                         className="bg-success h-2 rounded-full"
                         style={{ width: "82%" }}
@@ -275,12 +275,12 @@ export default function Admin() {
                             {log.status}
                           </Badge>
                         </div>
-                        <p className="text-sm text-muted-foreground">
+                        <p className="text-sm text-[hsl(var(--muted-foreground))]">
                           Agent ID: {log.agentId}
                           {log.studentId && ` • Student ID: ${log.studentId}`}
                         </p>
                       </div>
-                      <span className="text-xs text-muted-foreground">
+                      <span className="text-xs text-[hsl(var(--muted-foreground))]">
                         {new Date(log.createdAt).toLocaleString()}
                       </span>
                     </div>
@@ -288,8 +288,8 @@ export default function Admin() {
                 ))
               ) : (
                 <Card className="text-center py-12">
-                  <Activity className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-                  <p className="text-muted-foreground">No activity logs yet</p>
+                  <Activity className="w-12 h-12 text-[hsl(var(--muted-foreground))] mx-auto mb-4" />
+                  <p className="text-[hsl(var(--muted-foreground))]">No activity logs yet</p>
                 </Card>
               )}
             </div>

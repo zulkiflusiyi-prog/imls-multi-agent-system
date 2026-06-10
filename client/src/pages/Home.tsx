@@ -13,7 +13,7 @@ export default function Home() {
       <div className="min-h-screen bg-gradient-to-br from-background to-muted flex items-center justify-center">
         <div className="text-center">
           <div className="w-12 h-12 rounded-full border-4 border-muted border-t-accent animate-spin mx-auto mb-4" />
-          <p className="text-muted-foreground">Loading...</p>
+          <p className="text-[hsl(var(--muted-foreground))]">Loading...</p>
         </div>
       </div>
     );
@@ -29,8 +29,8 @@ export default function Home() {
       <nav className="fixed top-0 w-full z-50 backdrop-blur-md bg-background/80 border-b border-[hsl(var(--border))]">
         <div className="container flex items-center justify-between h-16">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-accent flex items-center justify-center">
-              <Brain className="w-5 h-5 text-accent-foreground" />
+            <div className="w-8 h-8 rounded-lg bg-[hsl(var(--accent))] flex items-center justify-center">
+              <Brain className="w-5 h-5 text-[hsl(var(--accent-foreground))]" />
             </div>
             <span className="font-sora font-bold text-lg">IMLS</span>
           </div>
@@ -55,7 +55,7 @@ export default function Home() {
             <span className="text-gradient"> Learning System</span>
           </h1>
 
-          <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-xl text-[hsl(var(--muted-foreground))] mb-8 max-w-2xl mx-auto leading-relaxed">
             Experience personalized learning powered by multi-agent AI. Get adaptive course recommendations, intelligent tutoring, and real-time performance feedback.
           </p>
 
@@ -73,19 +73,19 @@ export default function Home() {
           {/* Feature highlights */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-16">
             <div className="card-interactive card p-4">
-              <Brain className="w-8 h-8 text-accent mx-auto mb-3" />
+              <Brain className="w-8 h-8 text-[hsl(var(--accent))] mx-auto mb-3" />
               <h3 className="font-semibold mb-2">AI Tutoring</h3>
-              <p className="text-sm text-muted-foreground">Get instant answers and personalized guidance</p>
+              <p className="text-sm text-[hsl(var(--muted-foreground))]">Get instant answers and personalized guidance</p>
             </div>
             <div className="card-interactive card p-4">
-              <BarChart3 className="w-8 h-8 text-accent mx-auto mb-3" />
+              <BarChart3 className="w-8 h-8 text-[hsl(var(--accent))] mx-auto mb-3" />
               <h3 className="font-semibold mb-2">Smart Tracking</h3>
-              <p className="text-sm text-muted-foreground">Monitor progress with detailed analytics</p>
+              <p className="text-sm text-[hsl(var(--muted-foreground))]">Monitor progress with detailed analytics</p>
             </div>
             <div className="card-interactive card p-4">
-              <BookOpen className="w-8 h-8 text-accent mx-auto mb-3" />
+              <BookOpen className="w-8 h-8 text-[hsl(var(--accent))] mx-auto mb-3" />
               <h3 className="font-semibold mb-2">Adaptive Paths</h3>
-              <p className="text-sm text-muted-foreground">Courses tailored to your learning style</p>
+              <p className="text-sm text-[hsl(var(--muted-foreground))]">Courses tailored to your learning style</p>
             </div>
           </div>
         </div>
@@ -96,7 +96,7 @@ export default function Home() {
         <div className="container">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-sora font-bold mb-4">Powered by Four Intelligent Agents</h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-lg text-[hsl(var(--muted-foreground))] max-w-2xl mx-auto">
               Our multi-agent system works together to create the perfect learning experience
             </p>
           </div>
@@ -125,9 +125,9 @@ export default function Home() {
               }
             ].map((agent, i) => (
               <Card key={i} className="hover-lift p-6">
-                <agent.icon className="w-10 h-10 text-accent mb-4" />
+                <agent.icon className="w-10 h-10 text-[hsl(var(--accent))] mb-4" />
                 <h3 className="font-semibold text-lg mb-2">{agent.title}</h3>
-                <p className="text-sm text-muted-foreground">{agent.description}</p>
+                <p className="text-sm text-[hsl(var(--muted-foreground))]">{agent.description}</p>
               </Card>
             ))}
           </div>
@@ -138,7 +138,7 @@ export default function Home() {
       <section className="py-20 px-4">
         <div className="container max-w-3xl mx-auto text-center">
           <h2 className="text-4xl font-sora font-bold mb-6">Ready to Transform Your Learning?</h2>
-          <p className="text-lg text-muted-foreground mb-8">
+          <p className="text-lg text-[hsl(var(--muted-foreground))] mb-8">
             Join thousands of students using IMLS to achieve their learning goals with AI-powered personalization.
           </p>
           <a href={getLoginUrl()}>
@@ -153,12 +153,12 @@ export default function Home() {
       <footer className="border-t border-[hsl(var(--border))] py-8 px-4 bg-card/30">
         <div className="container flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
-            <div className="w-6 h-6 rounded-lg bg-accent flex items-center justify-center">
-              <Brain className="w-4 h-4 text-accent-foreground" />
+            <div className="w-6 h-6 rounded-lg bg-[hsl(var(--accent))] flex items-center justify-center">
+              <Brain className="w-4 h-4 text-[hsl(var(--accent-foreground))]" />
             </div>
             <span className="font-semibold">IMLS</span>
           </div>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-[hsl(var(--muted-foreground))]">
             © 2026 Intelligent Mobile Learning System. All rights reserved.
           </p>
         </div>
@@ -172,7 +172,7 @@ function DashboardRedirect() {
     <div className="min-h-screen bg-background flex items-center justify-center">
       <div className="text-center">
         <div className="w-12 h-12 rounded-full border-4 border-muted border-t-accent animate-spin mx-auto mb-4" />
-        <p className="text-muted-foreground mb-4">Redirecting to dashboard...</p>
+        <p className="text-[hsl(var(--muted-foreground))] mb-4">Redirecting to dashboard...</p>
         <Link href="/dashboard">
           <Button className="btn-primary">Go to Dashboard</Button>
         </Link>
