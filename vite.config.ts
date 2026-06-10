@@ -150,7 +150,23 @@ function vitePluginManusDebugCollector(): Plugin {
   };
 }
 
-const plugins = [react(), tailwindcss(), jsxLocPlugin(), vitePluginManusRuntime(), vitePluginManusDebugCollector()];
+const plugins = [
+  react(),
+  tailwindcss(),
+  jsxLocPlugin(),
+  vitePluginManusRuntime(),
+  vitePluginManusDebugCollector(),
+];
+
+const tailwindConfig = {
+  theme: {
+    fontFamily: {
+      sora: ['Sora', 'sans-serif'],
+      inter: ['Inter', 'sans-serif'],
+      sans: ['Inter', 'sans-serif'],
+    },
+  },
+};
 
 export default defineConfig({
   plugins,
