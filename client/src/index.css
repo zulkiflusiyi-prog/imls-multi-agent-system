@@ -63,7 +63,7 @@
   }
 
   * {
-    @apply border-border;
+    @apply border-[hsl(var(--border))];
   }
 
   body {
@@ -147,7 +147,7 @@
   }
 
   .btn-secondary {
-    @apply btn-base border border-border bg-muted hover:bg-muted/80 text-foreground;
+    @apply btn-base border border-[hsl(var(--border))] bg-muted hover:bg-muted/80 text-foreground;
   }
 
   .btn-ghost {

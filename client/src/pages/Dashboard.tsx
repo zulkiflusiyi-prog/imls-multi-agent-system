@@ -280,7 +280,7 @@ export default function Dashboard() {
                   { icon: BookOpen, text: "Started Course: React Fundamentals", time: "1 day ago" },
                   { icon: TrendingUp, text: "Achieved 90% on Assessment", time: "3 days ago" },
                 ].map((activity, i) => (
-                  <div key={i} className="flex items-start gap-3 pb-3 border-b border-border last:border-0">
+                  <div key={i} className="flex items-start gap-3 pb-3 border-b border-[hsl(var(--border))] last:border-0">
                     <activity.icon className="w-5 h-5 text-accent mt-0.5 flex-shrink-0" />
                     <div className="flex-1">
                       <p className="text-sm font-medium">{activity.text}</p>

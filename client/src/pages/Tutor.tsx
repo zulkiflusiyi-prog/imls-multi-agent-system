@@ -85,7 +85,7 @@ export default function Tutor() {
               </div>
 
               {/* Input Area */}
-              <div className="border-t border-border p-4">
+              <div className="border-t border-[hsl(var(--border))] p-4">
                 <div className="flex gap-2">
                   <Input
                     placeholder="Ask a question..."

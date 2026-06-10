@@ -26,7 +26,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted">
       {/* Navigation */}
-      <nav className="fixed top-0 w-full z-50 backdrop-blur-md bg-background/80 border-b border-border">
+      <nav className="fixed top-0 w-full z-50 backdrop-blur-md bg-background/80 border-b border-[hsl(var(--border))]">
         <div className="container flex items-center justify-between h-16">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-lg bg-accent flex items-center justify-center">
@@ -92,7 +92,7 @@ export default function Home() {
       </section>
 
       {/* Features Section */}
-      <section className="py-20 px-4 bg-card/50 border-y border-border">
+      <section className="py-20 px-4 bg-card/50 border-y border-[hsl(var(--border))]">
         <div className="container">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-sora font-bold mb-4">Powered by Four Intelligent Agents</h2>
@@ -150,7 +150,7 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-border py-8 px-4 bg-card/30">
+      <footer className="border-t border-[hsl(var(--border))] py-8 px-4 bg-card/30">
         <div className="container flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
             <div className="w-6 h-6 rounded-lg bg-accent flex items-center justify-center">
