@@ -10,7 +10,7 @@ import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
 
 export default function Register() {
-  const [, navigate] = useLocation();
+  const [location, setLocation] = useLocation();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -79,7 +79,7 @@ export default function Register() {
         
         // Redirect to dashboard
         setTimeout(() => {
-          navigate("/dashboard");
+          setLocation("/dashboard");
         }, 1000);
       }
     } catch (err: any) {
@@ -232,7 +232,7 @@ export default function Register() {
                 Already have an account?{" "}
                 <button
                   type="button"
-                  onClick={() => navigate("/login")}
+                  onClick={() => setLocation("/login")}
                   className="text-purple-600 hover:text-purple-700 font-medium transition-colors"
                 >
                   Sign in

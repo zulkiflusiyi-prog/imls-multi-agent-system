@@ -10,7 +10,7 @@ import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
 
 export default function Login() {
-  const [, navigate] = useLocation();
+  const [location, setLocation] = useLocation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -61,7 +61,7 @@ export default function Login() {
         
         // Redirect to dashboard
         setTimeout(() => {
-          navigate("/dashboard");
+          setLocation("/dashboard");
         }, 1000);
       }
     } catch (err: any) {
@@ -174,7 +174,7 @@ export default function Login() {
                 Don't have an account?{" "}
                 <button
                   type="button"
-                  onClick={() => navigate("/register")}
+                  onClick={() => setLocation("/register")}
                   className="text-purple-600 hover:text-purple-700 font-medium transition-colors"
                 >
                   Sign up
@@ -186,7 +186,7 @@ export default function Login() {
             <div className="text-center">
               <button
                 type="button"
-                onClick={() => navigate("/forgot-password")}
+                onClick={() => setLocation("/forgot-password")}
                 className="text-sm text-slate-500 hover:text-slate-700 transition-colors"
               >
                 Forgot your password?
