@@ -13,7 +13,7 @@ interface NavigationProps {
 }
 
 export default function Navigation({ isLoggedIn, userRole = "user", userName = "User" }: NavigationProps) {
-  const [, navigate] = useLocation();
+  const [location, setLocation] = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const logoutMutation = trpc.auth.logout.useMutation();
 
@@ -23,7 +23,7 @@ export default function Navigation({ isLoggedIn, userRole = "user", userName = "
       localStorage.removeItem("sessionToken");
       localStorage.removeItem("rememberEmail");
       toast.success("Logged out successfully");
-      navigate("/");
+      setLocation("/");
     } catch (error) {
       toast.error("Logout failed");
     }
@@ -51,13 +51,13 @@ export default function Navigation({ isLoggedIn, userRole = "user", userName = "
               <>
                 {/* Student Links */}
                 <button
-                  onClick={() => navigate("/dashboard")}
+                  onClick={() => setLocation("/dashboard")}
                   className="text-slate-600 hover:text-slate-900 font-medium transition-colors"
                 >
                   Dashboard
                 </button>
                 <button
-                  onClick={() => navigate("/tutor")}
+                  onClick={() => setLocation("/tutor")}
                   className="text-slate-600 hover:text-slate-900 font-medium transition-colors"
                 >
                   AI Tutor
@@ -66,7 +66,7 @@ export default function Navigation({ isLoggedIn, userRole = "user", userName = "
                 {/* Admin Links */}
                 {isAdmin && (
                   <button
-                    onClick={() => navigate("/admin")}
+                    onClick={() => setLocation("/admin")}
                     className="text-slate-600 hover:text-slate-900 font-medium transition-colors"
                   >
                     Admin Panel
@@ -92,11 +92,11 @@ export default function Navigation({ isLoggedIn, userRole = "user", userName = "
                       {isAdmin ? "Admin Account" : "Student Account"}
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem onClick={() => navigate("/profile")}>
+                    <DropdownMenuItem onClick={() => setLocation("/profile")}>
                       <User className="mr-2 h-4 w-4" />
                       <span>Profile Settings</span>
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => navigate("/settings")}>
+                    <DropdownMenuItem onClick={() => setLocation("/settings")}>
                       <Settings className="mr-2 h-4 w-4" />
                       <span>Account Settings</span>
                     </DropdownMenuItem>
@@ -111,13 +111,13 @@ export default function Navigation({ isLoggedIn, userRole = "user", userName = "
             ) : (
               <>
                 <button
-                  onClick={() => navigate("/login")}
+                  onClick={() => setLocation("/login")}
                   className="text-slate-600 hover:text-slate-900 font-medium transition-colors"
                 >
                   Sign In
                 </button>
                 <Button
-                  onClick={() => navigate("/register")}
+                  onClick={() => setLocation("/register")}
                   className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white"
                 >
                   Get Started
@@ -148,7 +148,7 @@ export default function Navigation({ isLoggedIn, userRole = "user", userName = "
               <>
                 <button
                   onClick={() => {
-                    navigate("/dashboard");
+                    setLocation("/dashboard");
                     setIsMobileMenuOpen(false);
                   }}
                   className="block w-full text-left px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-lg transition-colors"
@@ -157,7 +157,7 @@ export default function Navigation({ isLoggedIn, userRole = "user", userName = "
                 </button>
                 <button
                   onClick={() => {
-                    navigate("/tutor");
+                    setLocation("/tutor");
                     setIsMobileMenuOpen(false);
                   }}
                   className="block w-full text-left px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-lg transition-colors"
@@ -167,7 +167,7 @@ export default function Navigation({ isLoggedIn, userRole = "user", userName = "
                 {isAdmin && (
                   <button
                     onClick={() => {
-                      navigate("/admin");
+                      setLocation("/admin");
                       setIsMobileMenuOpen(false);
                     }}
                     className="block w-full text-left px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-lg transition-colors"
@@ -177,7 +177,7 @@ export default function Navigation({ isLoggedIn, userRole = "user", userName = "
                 )}
                 <button
                   onClick={() => {
-                    navigate("/profile");
+                    setLocation("/profile");
                     setIsMobileMenuOpen(false);
                   }}
                   className="block w-full text-left px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-lg transition-colors"
@@ -198,7 +198,7 @@ export default function Navigation({ isLoggedIn, userRole = "user", userName = "
               <>
                 <button
                   onClick={() => {
-                    navigate("/login");
+                    setLocation("/login");
                     setIsMobileMenuOpen(false);
                   }}
                   className="block w-full text-left px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-lg transition-colors"
@@ -207,7 +207,7 @@ export default function Navigation({ isLoggedIn, userRole = "user", userName = "
                 </button>
                 <button
                   onClick={() => {
-                    navigate("/register");
+                    setLocation("/register");
                     setIsMobileMenuOpen(false);
                   }}
                   className="block w-full text-left px-4 py-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg hover:from-purple-700 hover:to-blue-700 transition-colors"
