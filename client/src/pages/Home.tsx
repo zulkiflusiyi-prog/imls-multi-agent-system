@@ -6,7 +6,7 @@ import Navigation from "@/components/Navigation";
 import { useState, useEffect } from "react";
 
 export default function Home() {
-  const [, navigate] = useLocation();
+  const [location, setLocation] = useLocation();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userName, setUserName] = useState("User");
 
@@ -39,7 +39,7 @@ export default function Home() {
             {isLoggedIn ? (
               <>
                 <Button
-                  onClick={() => navigate("/dashboard")}
+                  onClick={() => setLocation("/dashboard")}
                   className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white px-8 py-6 text-lg rounded-lg"
                 >
                   Go to Dashboard <ArrowRight className="ml-2 h-5 w-5" />
@@ -48,13 +48,13 @@ export default function Home() {
             ) : (
               <>
                 <Button
-                  onClick={() => navigate("/register")}
+                  onClick={() => setLocation("/register")}
                   className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white px-8 py-6 text-lg rounded-lg"
                 >
                   Get Started <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
                 <Button
-                  onClick={() => navigate("/login")}
+                  onClick={() => setLocation("/login")}
                   variant="outline"
                   className="px-8 py-6 text-lg rounded-lg border-2 border-slate-300 hover:bg-slate-100"
                 >
