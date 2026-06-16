@@ -17,11 +17,16 @@ import {
  */
 export const users = mysqlTable("users", {
   id: int("id").autoincrement().primaryKey(),
-  openId: varchar("openId", { length: 64 }).notNull().unique(),
+  openId: varchar("openId", { length: 64 }).unique(),
   name: text("name"),
-  email: varchar("email", { length: 320 }),
-  loginMethod: varchar("loginMethod", { length: 64 }),
+  email: varchar("email", { length: 320 }).unique(),
+  passwordHash: text("passwordHash"), // For email/password login
+  loginMethod: varchar("loginMethod", { length: 64 }), // 'oauth', 'email', or 'both'
   role: mysqlEnum("role", ["user", "admin"]).default("user").notNull(),
+  isEmailVerified: boolean("isEmailVerified").default(false).notNull(),
+  emailVerificationToken: varchar("emailVerificationToken", { length: 256 }),
+  passwordResetToken: varchar("passwordResetToken", { length: 256 }),
+  passwordResetExpiresAt: timestamp("passwordResetExpiresAt"),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
   lastSignedIn: timestamp("lastSignedIn").defaultNow().notNull(),
@@ -29,6 +34,20 @@ export const users = mysqlTable("users", {
 
 export type User = typeof users.$inferSelect;
 export type InsertUser = typeof users.$inferInsert;
+
+/**
+ * Auth sessions - track active user sessions
+ */
+export const authSessions = mysqlTable("auth_sessions", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull(),
+  sessionToken: varchar("sessionToken", { length: 256 }).notNull().unique(),
+  expiresAt: timestamp("expiresAt").notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type AuthSession = typeof authSessions.$inferSelect;
+export type InsertAuthSession = typeof authSessions.$inferInsert;
 
 /**
  * Student profiles - extended information for students

@@ -4,6 +4,16 @@ import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, protectedProcedure, router } from "./_core/trpc";
 import { z } from "zod";
 import {
+  registerUser,
+  loginUser,
+  createSession,
+  verifySession,
+  deleteSession,
+  requestPasswordReset,
+  resetPassword,
+  getUserById,
+} from "./auth";
+import {
   getOrCreateStudentProfile,
   updateStudentProfile,
   getAllCourses,
@@ -38,6 +48,50 @@ export const appRouter = router({
   system: systemRouter,
   auth: router({
     me: publicProcedure.query((opts) => opts.ctx.user),
+    
+    register: publicProcedure
+      .input(
+        z.object({
+          email: z.string().email("Invalid email address"),
+          password: z.string().min(8, "Password must be at least 8 characters"),
+          name: z.string().min(2, "Name must be at least 2 characters"),
+        })
+      )
+      .mutation(async ({ input }) => {
+        try {
+          const user = await registerUser(input.email, input.password, input.name);
+          const sessionToken = await createSession(user.id);
+          return {
+            success: true,
+            user,
+            sessionToken,
+          };
+        } catch (error: any) {
+          throw new Error(error.message || "Registration failed");
+        }
+      }),
+
+    login: publicProcedure
+      .input(
+        z.object({
+          email: z.string().email("Invalid email address"),
+          password: z.string().min(1, "Password is required"),
+        })
+      )
+      .mutation(async ({ input }) => {
+        try {
+          const user = await loginUser(input.email, input.password);
+          const sessionToken = await createSession(user.id);
+          return {
+            success: true,
+            user,
+            sessionToken,
+          };
+        } catch (error: any) {
+          throw new Error(error.message || "Login failed");
+        }
+      }),
+
     logout: publicProcedure.mutation(({ ctx }) => {
       const cookieOptions = getSessionCookieOptions(ctx.req);
       ctx.res.clearCookie(COOKIE_NAME, { ...cookieOptions, maxAge: -1 });
@@ -45,6 +99,29 @@ export const appRouter = router({
         success: true,
       } as const;
     }),
+
+    requestPasswordReset: publicProcedure
+      .input(z.object({ email: z.string().email() }))
+      .mutation(async ({ input }) => {
+        const message = await requestPasswordReset(input.email);
+        return { success: true, message };
+      }),
+
+    resetPassword: publicProcedure
+      .input(
+        z.object({
+          resetToken: z.string(),
+          newPassword: z.string().min(8, "Password must be at least 8 characters"),
+        })
+      )
+      .mutation(async ({ input }) => {
+        try {
+          await resetPassword(input.resetToken, input.newPassword);
+          return { success: true, message: "Password reset successful" };
+        } catch (error: any) {
+          throw new Error(error.message || "Password reset failed");
+        }
+      }),
   }),
 
   // ============ STUDENT PROFILE ROUTES ============

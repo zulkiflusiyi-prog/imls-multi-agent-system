@@ -15,6 +15,13 @@
       "when": 1781049967633,
       "tag": "0001_silent_slyde",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1781606806626,
+      "tag": "0002_salty_the_professor",
+      "breakpoints": true
     }
   ]
 }
