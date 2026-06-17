@@ -45,7 +45,7 @@ export default function Home() {
           {isLoggedIn && user && (
             <div className="mb-8 text-center">
               <p className="text-lg text-slate-600 mb-4">
-                Welcome back, <span className="font-semibold text-slate-900">{user.name || "User"}</span>!
+                Welcome back!
               </p>
             </div>
           )}
