@@ -137,8 +137,15 @@ export async function registerUser(
     isEmailVerified: false,
   });
 
-  const userId = result[0]?.insertId;
-  if (!userId) throw new Error("Failed to create user");
+  // Get the newly created user
+  const newUser = await db
+    .select()
+    .from(users)
+    .where(eq(users.email, email))
+    .limit(1);
+
+  if (newUser.length === 0) throw new Error("Failed to create user");
+  const userId = newUser[0].id;
 
   return {
     id: userId as number,
