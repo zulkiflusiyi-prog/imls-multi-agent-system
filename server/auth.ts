@@ -2,6 +2,7 @@ import crypto from "crypto";
 import { eq } from "drizzle-orm";
 import { getDb } from "./db";
 import { users, authSessions } from "../drizzle/schema";
+import { sendVerificationEmail, sendPasswordResetEmail } from "./_core/emailService";
 
 const SALT_ROUNDS = 10;
 const SESSION_DURATION = 30 * 24 * 60 * 60 * 1000; // 30 days in milliseconds
@@ -186,6 +187,11 @@ export async function loginUser(
     throw new Error("Invalid email or password");
   }
 
+  // Check if email is verified
+  if (!user.isEmailVerified) {
+    throw new Error("Please verify your email before logging in. Check your inbox for the verification link.");
+  }
+
   // Update last signed in
   await db
     .update(users)
@@ -227,9 +233,75 @@ export async function getUserById(
 }
 
 /**
+ * Request email verification
+ */
+export async function requestEmailVerification(
+  userId: number,
+  email: string,
+  appUrl: string
+): Promise<boolean> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  const verificationToken = generateToken();
+  const expiresAt = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
+
+  await db
+    .update(users)
+    .set({
+      emailVerificationToken: verificationToken,
+      emailVerificationExpiresAt: expiresAt,
+    })
+    .where(eq(users.id, userId));
+
+  // Send verification email
+  return await sendVerificationEmail(email, verificationToken, appUrl);
+}
+
+/**
+ * Verify email with token
+ */
+export async function verifyEmail(verificationToken: string): Promise<boolean> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  const userResult = await db
+    .select()
+    .from(users)
+    .where(eq(users.emailVerificationToken, verificationToken))
+    .limit(1);
+
+  if (userResult.length === 0) {
+    throw new Error("Invalid verification token");
+  }
+
+  const user = userResult[0];
+  if (
+    !user.emailVerificationExpiresAt ||
+    new Date(user.emailVerificationExpiresAt) < new Date()
+  ) {
+    throw new Error("Verification token has expired");
+  }
+
+  await db
+    .update(users)
+    .set({
+      isEmailVerified: true,
+      emailVerificationToken: null,
+      emailVerificationExpiresAt: null,
+    })
+    .where(eq(users.id, user.id));
+
+  return true;
+}
+
+/**
  * Request password reset
  */
-export async function requestPasswordReset(email: string): Promise<string> {
+export async function requestPasswordReset(
+  email: string,
+  appUrl: string
+): Promise<boolean> {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
 
@@ -240,8 +312,8 @@ export async function requestPasswordReset(email: string): Promise<string> {
     .limit(1);
 
   if (userResult.length === 0) {
-    // Don't reveal if email exists
-    return "If an account exists with this email, a reset link has been sent.";
+    // Don't reveal if email exists - still return true for security
+    return true;
   }
 
   const user = userResult[0];
@@ -256,7 +328,8 @@ export async function requestPasswordReset(email: string): Promise<string> {
     })
     .where(eq(users.id, user.id));
 
-  return resetToken;
+  // Send password reset email
+  return await sendPasswordResetEmail(email, resetToken, appUrl);
 }
 
 /**

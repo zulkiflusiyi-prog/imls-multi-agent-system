@@ -18,6 +18,7 @@ import Recommendations from "./pages/Recommendations";
 import Monitoring from "./pages/Monitoring";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
+import VerifyEmail from "./pages/VerifyEmail";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -28,6 +29,7 @@ function Router() {
       <Route path="/register" component={Register} />
       <Route path="/forgot-password" component={ForgotPassword} />
       <Route path="/reset-password" component={ResetPassword} />
+      <Route path="/verify-email" component={VerifyEmail} />
       <Route path="/dashboard" component={Dashboard} />
       <Route path="/courses" component={Courses} />
       <Route path="/course/:id" component={CourseDetails} />

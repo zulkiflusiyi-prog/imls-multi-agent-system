@@ -72,15 +72,12 @@ export default function Register() {
       });
 
       if (result.success) {
-        // Store session token
-        localStorage.setItem("sessionToken", result.sessionToken);
-
-        toast.success("Account created successfully! Redirecting...");
+        toast.success("Account created! Please check your email to verify your account.");
         
-        // Redirect to dashboard
+        // Redirect to email verification page
         setTimeout(() => {
-          setLocation("/dashboard");
-        }, 1000);
+          setLocation("/login");
+        }, 2000);
       }
     } catch (err: any) {
       setError(err.message || "Registration failed. Please try again.");

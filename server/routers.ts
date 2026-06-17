@@ -12,6 +12,8 @@ import {
   requestPasswordReset,
   resetPassword,
   getUserById,
+  requestEmailVerification,
+  verifyEmail,
 } from "./auth";
 import {
   getOrCreateStudentProfile,
@@ -100,11 +102,25 @@ export const appRouter = router({
       } as const;
     }),
 
+    requestEmailVerification: protectedProcedure.mutation(async ({ ctx }) => {
+      const appUrl = ctx.req.headers.origin || "https://imls-learn-jha5ptns.manus.space";
+      const success = await requestEmailVerification(ctx.user.id, ctx.user.email || "", appUrl);
+      return { success, message: "Verification email has been sent." };
+    }),
+
+    verifyEmail: publicProcedure
+      .input(z.object({ token: z.string() }))
+      .mutation(async ({ input }) => {
+        const success = await verifyEmail(input.token);
+        return { success, message: "Email verified successfully!" };
+      }),
+
     requestPasswordReset: publicProcedure
       .input(z.object({ email: z.string().email() }))
-      .mutation(async ({ input }) => {
-        const message = await requestPasswordReset(input.email);
-        return { success: true, message };
+      .mutation(async ({ input, ctx }) => {
+        const appUrl = ctx.req.headers.origin || "https://imls-learn-jha5ptns.manus.space";
+        const success = await requestPasswordReset(input.email, appUrl);
+        return { success, message: "If an account exists with this email, a reset link has been sent." };
       }),
 
     resetPassword: publicProcedure
