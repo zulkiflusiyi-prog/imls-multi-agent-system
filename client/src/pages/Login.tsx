@@ -192,6 +192,22 @@ export default function Login() {
                 Forgot your password?
               </button>
             </div>
+
+            {/* Use Another Account Link */}
+            <div className="text-center">
+              <button
+                type="button"
+                onClick={() => {
+                  setEmail("");
+                  setPassword("");
+                  setError("");
+                  setRememberMe(false);
+                }}
+                className="text-sm text-slate-500 hover:text-slate-700 transition-colors"
+              >
+                Use another account
+              </button>
+            </div>
           </form>
         </Card>
 
