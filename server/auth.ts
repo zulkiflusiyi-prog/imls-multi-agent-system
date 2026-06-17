@@ -187,11 +187,6 @@ export async function loginUser(
     throw new Error("Invalid email or password");
   }
 
-  // Check if email is verified
-  if (!user.isEmailVerified) {
-    throw new Error("Please verify your email before logging in. Check your inbox for the verification link.");
-  }
-
   // Update last signed in
   await db
     .update(users)
