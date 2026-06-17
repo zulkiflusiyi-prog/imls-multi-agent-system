@@ -4,6 +4,8 @@ import NotFound from "@/pages/NotFound";
 import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
+import { SessionTimeoutWarning } from "./components/SessionTimeoutWarning";
+import { useSessionTimeout } from "./hooks/useSessionTimeout";
 import Home from "./pages/Home";
 import Dashboard from "./pages/Dashboard";
 import Tutor from "./pages/Tutor";
@@ -14,6 +16,8 @@ import Courses from "./pages/Courses";
 import CourseDetails from "./pages/CourseDetails";
 import Recommendations from "./pages/Recommendations";
 import Monitoring from "./pages/Monitoring";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -22,6 +26,8 @@ function Router() {
       <Route path="/" component={Home} />
       <Route path="/login" component={Login} />
       <Route path="/register" component={Register} />
+      <Route path="/forgot-password" component={ForgotPassword} />
+      <Route path="/reset-password" component={ResetPassword} />
       <Route path="/dashboard" component={Dashboard} />
       <Route path="/courses" component={Courses} />
       <Route path="/course/:id" component={CourseDetails} />
@@ -41,6 +47,21 @@ function Router() {
 //   to keep consistent foreground/background color across components
 // - If you want to make theme switchable, pass `switchable` ThemeProvider and use `useTheme` hook
 
+function AppContent() {
+  const { showWarning, handleExtendSession, handleLogout } = useSessionTimeout();
+
+  return (
+    <>
+      <Router />
+      <SessionTimeoutWarning
+        isOpen={showWarning}
+        onExtend={handleExtendSession}
+        onLogout={handleLogout}
+      />
+    </>
+  );
+}
+
 function App() {
   return (
     <ErrorBoundary>
@@ -50,7 +71,7 @@ function App() {
       >
         <TooltipProvider>
           <Toaster />
-          <Router />
+          <AppContent />
         </TooltipProvider>
       </ThemeProvider>
     </ErrorBoundary>
