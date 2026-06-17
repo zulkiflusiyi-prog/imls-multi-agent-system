@@ -10,6 +10,8 @@ import Tutor from "./pages/Tutor";
 import Admin from "./pages/Admin";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import Courses from "./pages/Courses";
+import CourseDetails from "./pages/CourseDetails";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -19,6 +21,8 @@ function Router() {
       <Route path="/login" component={Login} />
       <Route path="/register" component={Register} />
       <Route path="/dashboard" component={Dashboard} />
+      <Route path="/courses" component={Courses} />
+      <Route path="/course/:id" component={CourseDetails} />
       <Route path="/tutor" component={Tutor} />
       <Route path="/admin" component={Admin} />
       <Route path="/404" component={NotFound} />
