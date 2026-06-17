@@ -4,22 +4,29 @@ import { Card } from "@/components/ui/card";
 import { ArrowRight, Zap, BarChart3, BookOpen, Brain } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import { useState, useEffect } from "react";
+import { useAuth } from "@/_core/hooks/useAuth";
 
 export default function Home() {
   const [location, setLocation] = useLocation();
+  const { user, isAuthenticated } = useAuth();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userName, setUserName] = useState("User");
 
   useEffect(() => {
-    // Check if user is logged in
+    // Check if user is logged in and set their name
     const token = localStorage.getItem("sessionToken");
     setIsLoggedIn(!!token);
-  }, []);
+    
+    // Use the authenticated user's name if available
+    if (user && user.name) {
+      setUserName(user.name);
+    }
+  }, [user]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 flex flex-col">
       {/* Navigation */}
-      <Navigation isLoggedIn={isLoggedIn} userName={userName} />
+      <Navigation isLoggedIn={isLoggedIn} userName={userName} userRole={user?.role} />
 
       {/* Hero Section */}
       <section className="flex-1 flex items-center justify-center px-4 py-20">
@@ -33,6 +40,15 @@ export default function Home() {
           <p className="text-xl text-slate-600 mb-8 max-w-2xl mx-auto">
             Experience personalized learning powered by multi-agent AI. Get adaptive course recommendations, intelligent tutoring, and real-time performance feedback.
           </p>
+
+          {/* Welcome Message for Logged-in Users */}
+          {isLoggedIn && user && (
+            <div className="mb-8 text-center">
+              <p className="text-lg text-slate-600 mb-4">
+                Welcome back, <span className="font-semibold text-slate-900">{user.name || "User"}</span>!
+              </p>
+            </div>
+          )}
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
