@@ -12,6 +12,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Courses from "./pages/Courses";
 import CourseDetails from "./pages/CourseDetails";
+import Recommendations from "./pages/Recommendations";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -23,6 +24,7 @@ function Router() {
       <Route path="/dashboard" component={Dashboard} />
       <Route path="/courses" component={Courses} />
       <Route path="/course/:id" component={CourseDetails} />
+      <Route path="/recommendations" component={Recommendations} />
       <Route path="/tutor" component={Tutor} />
       <Route path="/admin" component={Admin} />
       <Route path="/404" component={NotFound} />
